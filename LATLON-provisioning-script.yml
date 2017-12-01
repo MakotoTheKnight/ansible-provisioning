@@ -1,0 +1,36 @@
+---
+- hosts: all
+  tasks:
+    - name: 'Bootstrap basic PPAs.'
+      become: yes
+      block:
+        - apt_key:
+            url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+            state: present
+        - apt_repository:
+            repo: 'ppa:git-core/ppa'
+            state: present
+        - apt_repository:
+            repo: 'ppa:mozillateam/firefox-next'
+            state: present
+        - apt_repository:
+            repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb stable main'
+            state: present
+            filename: 'google-chrome-beta'
+        - apt_repository:
+            repo: 'ppa:webupd8team/terminix'
+            state: present
+
+        - apt: update_cache=yes
+        - apt: name=git state=latest
+        - apt: name=neovim state=latest
+        - apt: name=firefox state=latest
+        - apt: name=google-chrome-beta state=latest
+        - apt: name=tilix state=latest
+    - name:  'Fix Tilix VTE issues.'
+      become: yes
+      block:
+          - file:
+              src: /etc/profile.d/vte-2.91.sh
+              dest: /etc/profile.d/vte.sh
+              state: link
