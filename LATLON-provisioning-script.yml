@@ -20,13 +20,17 @@
         - apt_repository:
             repo: 'ppa:webupd8team/terminix'
             state: present
-
+        - apt_repository:
+            repo: 'ppa:webupd8team/java'
+            state: present
+        - shell: 'echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections'
         - apt: update_cache=yes
         - apt: name=git state=latest
         - apt: name=neovim state=latest
         - apt: name=firefox state=latest
         - apt: name=google-chrome-beta state=latest
         - apt: name=tilix state=latest
+        - apt: name=oracle-java8-installer
     - name:  'Fix Tilix VTE issues.'
       become: yes
       block:
@@ -34,3 +38,13 @@
               src: /etc/profile.d/vte-2.91.sh
               dest: /etc/profile.d/vte.sh
               state: link
+    - name: 'Download the Toolbox.'
+      block:
+          - get_url:
+              url: http://download.jetbrains.com/toolbox/jetbrains-toolbox-1.6.2914.tar.gz
+              dest: /tmp/jetbrains-toolbox.tar.gz
+              mode: 0700
+          - unarchive:
+              src: /tmp/jetbrains-toolbox.tar.gz
+              dest: /tmp
+          - command: /tmp/jetbrains-toolbox/jetbrains-toolbox
