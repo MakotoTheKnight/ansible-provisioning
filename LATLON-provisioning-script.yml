@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-    - name: 'Bootstrap basic PPAs.'
+    - name: 'Bootstrap basic PPAs and install applications.'
       become: yes
       block:
         - apt_key:
@@ -25,19 +25,31 @@
             state: present
         - shell: 'echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections'
         - apt: update_cache=yes
+        - apt: name=pass state=latest
         - apt: name=git state=latest
         - apt: name=neovim state=latest
         - apt: name=firefox state=latest
         - apt: name=google-chrome-beta state=latest
         - apt: name=tilix state=latest
-        - apt: name=oracle-java8-installer
-    - name:  'Fix Tilix VTE issues.'
-      become: yes
-      block:
-          - file:
-              src: /etc/profile.d/vte-2.91.sh
-              dest: /etc/profile.d/vte.sh
-              state: link
+        - apt: name=oracle-java8-installer state=latest
+        - apt: name=fonts-hack-ttf state=latest
+        - apt:
+            deb: https://github.com/onivim/oni/releases/download/v0.2.18/Oni-0.2.18-amd64-linux.deb
+        # To install RuneScape
+        - apt:
+            deb: http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
+        - apt_repository:
+            repo: 'deb https://content.runescape.com/downloads/ubuntu trusty non-free'
+        - apt_key:
+            url: https://content.runescape.com/downloads/ubuntu/runescape.gpg.key
+            state: present
+        - apt:
+            deb: runescape-launcher
+            allow_unauthenticated: yes
+        - apt:
+            autoclean: yes
+        - apt:
+            autoremove: yes
     - name: 'Download the Toolbox.'
       block:
           - get_url:
@@ -47,4 +59,4 @@
           - unarchive:
               src: /tmp/jetbrains-toolbox.tar.gz
               dest: /tmp
-          - command: /tmp/jetbrains-toolbox-1.6.2914/jetbrains-toolbox
+          - command: /tmp/jetbrains-toolbox-1.6.2914/jetbrains-toolbox-1.6.2914
