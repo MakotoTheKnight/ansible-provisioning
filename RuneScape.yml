@@ -18,10 +18,14 @@
                  filename: 'runescape'
        - name: 'Install RuneScape.'
          become: yes
-         apt:
-             deb: runescape-launcher
-             state: present
-             allow_unauthenticated: yes
+         block:
+             - apt:
+                 update_cache: yes
+                 allow_unauthenticated: yes
+             - apt:
+                 name: runescape-launcher
+                 state: present
+                 allow_unauthenticated: yes
 
        - name: 'Disable the repository (so that updates can work again).'
          become: yes
