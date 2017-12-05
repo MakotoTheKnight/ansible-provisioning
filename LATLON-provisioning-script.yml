@@ -8,36 +8,35 @@
             url: https://dl-ssl.google.com/linux/linux_signing_key.pub
             state: present
         - apt_repository:
-            repo: 'ppa:git-core/ppa'
+            repo: "{{ item }}"
             state: present
-        - apt_repository:
-            repo: 'ppa:mozillateam/firefox-next'
-            state: present
+            update_cache: true
+          with_items:
+              - 'ppa:git-core/ppa'
+              - 'ppa:mozillateam/firefox-next'
+              - 'ppa:webupd8team/terminix'
+              - 'ppa:webupd8team/java'
         - apt_repository:
             repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb stable main'
             state: present
             filename: 'google-chrome-beta'
-        - apt_repository:
-            repo: 'ppa:webupd8team/terminix'
-            state: present
-        - apt_repository:
-            repo: 'ppa:webupd8team/java'
-            state: present
         - shell: 'echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections'
-        - apt: update_cache=yes
-        - apt: name=pass state=latest
-        - apt: name=git state=latest
-        - apt: name=neovim state=latest
-        - apt: name=firefox state=latest
-        - apt: name=google-chrome-beta state=latest
-        - apt: name=tilix state=latest
-        - apt: name=oracle-java8-installer state=latest
-        - apt: name=fonts-hack-ttf state=latest
+        - apt:
+            name: "{{ item }}"
+            state: latest
+          with_items:
+              - pass
+              - git
+              - neovim
+              - firefox
+              - google-chrome-beta
+              - tilix
+              - oracle-java8-installer
+              - fonts-hack-ttf
         - apt:
             deb: https://github.com/onivim/oni/releases/download/v0.2.18/Oni-0.2.18-amd64-linux.deb
         - apt:
             autoclean: yes
-        - apt:
             autoremove: yes
     - name: 'Download the Toolbox.'
       block:
