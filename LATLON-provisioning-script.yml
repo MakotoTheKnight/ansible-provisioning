@@ -47,4 +47,4 @@
           - unarchive:
               src: /tmp/jetbrains-toolbox.tar.gz
               dest: /tmp
-          - command: /tmp/jetbrains-toolbox-1.6.2914/jetbrains-toolbox-1.6.2914
+          - command: /tmp/jetbrains-toolbox-1.6.2914/jetbrains-toolbox
