@@ -2,16 +2,30 @@
  - hosts: all
    tasks:
        - name: 'Install the needed libglew version.'
+         become: yes
          apt:
              deb: http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
-        - name: 'Add the RuneScape repository.'
-          block:
-              - apt_repository:
-                  repo: 'deb https://content.runescape.com/downloads/ubuntu trusty non-free'
-              - apt_key:
-                  url: https://content.runescape.com/downloads/ubuntu/runescape.gpg.key
-                  state: present
-        - name: 'Install RuneScape.'
-          apt:
-              deb: runescape-launcher
-              allow_unauthenticated: yes
+             state: present
+
+       - name: 'Add the RuneScape repository.'
+         become: yes
+         block:
+             - apt_repository:
+                 repo: 'deb https://content.runescape.com/downloads/ubuntu trusty non-free'
+             - apt_key:
+                 url: https://content.runescape.com/downloads/ubuntu/runescape.gpg.key
+                 state: present
+
+       - name: 'Install RuneScape.'
+         become: yes
+         apt:
+             deb: runescape-launcher
+             state: present
+             allow_unauthenticated: yes
+
+       - name: 'Disable the repository (so that updates can work again).'
+         become: yes
+         lineinfile:
+             path: /etc/apt/sources.list.d/runescape.list
+             regexp: '^deb https://content.runescape.com'
+             line: '# deb https://content.runescape.com/downloads/ubuntu trusty non-free'
