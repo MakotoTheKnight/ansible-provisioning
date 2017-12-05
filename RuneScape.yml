@@ -6,7 +6,6 @@
          apt:
              deb: http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
              state: present
-
        - name: 'Add the RuneScape repository.'
          become: yes
          block:
@@ -16,6 +15,7 @@
              - apt_repository:
                  repo: 'deb [trusted=yes] https://content.runescape.com/downloads/ubuntu trusty non-free'
                  state: present
+                 filename: 'runescape'
        - name: 'Install RuneScape.'
          become: yes
          apt:
