@@ -35,17 +35,6 @@
         - apt: name=fonts-hack-ttf state=latest
         - apt:
             deb: https://github.com/onivim/oni/releases/download/v0.2.18/Oni-0.2.18-amd64-linux.deb
-        # To install RuneScape
-        - apt:
-            deb: http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
-        - apt_repository:
-            repo: 'deb https://content.runescape.com/downloads/ubuntu trusty non-free'
-        - apt_key:
-            url: https://content.runescape.com/downloads/ubuntu/runescape.gpg.key
-            state: present
-        - apt:
-            deb: runescape-launcher
-            allow_unauthenticated: yes
         - apt:
             autoclean: yes
         - apt:
