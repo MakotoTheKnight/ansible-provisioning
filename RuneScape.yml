@@ -1,11 +1,15 @@
 ---
  - hosts: all
    tasks:
-       - name: 'Install the needed libglew version.'
+       - name: 'Install the needed dependencies.'
          become: yes
          apt:
-             deb: http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
+             deb: "{{ item }}"
              state: present
+         with_items:
+             - http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+             - http://mirrors.kernel.org/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
+
        - name: 'Add the RuneScape repository.'
          become: yes
          block:
@@ -31,5 +35,5 @@
          become: yes
          lineinfile:
              path: /etc/apt/sources.list.d/runescape.list
-             regexp: '^deb https://content.runescape.com'
-             line: '# deb https://content.runescape.com/downloads/ubuntu trusty non-free'
+             regexp: '^deb [trusted=yes] https://content.runescape.com'
+             line: '# deb [trusted=yes] https://content.runescape.com/downloads/ubuntu trusty non-free'
