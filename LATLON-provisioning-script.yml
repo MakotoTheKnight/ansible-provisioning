@@ -48,3 +48,8 @@
               src: /tmp/jetbrains-toolbox.tar.gz
               dest: /tmp
           - command: /tmp/jetbrains-toolbox-1.6.2914/jetbrains-toolbox
+    - name: 'Download bash-it.'
+      git:
+        repo: https://github.com/Bash-it/bash-it.git
+        dest: "{{ ansible_env.HOME }}/.bash-it"
+        depth: 1
