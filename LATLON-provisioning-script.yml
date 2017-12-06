@@ -16,10 +16,7 @@
               - 'ppa:mozillateam/firefox-next'
               - 'ppa:webupd8team/terminix'
               - 'ppa:webupd8team/java'
-        - apt_repository:
-            repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb stable main'
-            state: present
-            filename: 'google-chrome-beta'
+              - 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb stable main'
         - shell: 'echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections'
         - apt:
             name: "{{ item }}"
